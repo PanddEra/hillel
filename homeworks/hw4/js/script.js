@@ -1,3 +1,4 @@
+'use strict'
 const startPrice = Number(prompt("Enter product price:"));
 const discount = Number(prompt("Enter product discount(%):"));
 
