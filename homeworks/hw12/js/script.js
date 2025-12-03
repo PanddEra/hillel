@@ -25,11 +25,15 @@ for (let i = 1; i < 101; i++) {
 //task 4
 const number2 = 23;
 let isPrime = true;
-for (let i = 2; i < number2; i++) {
-    if(number2 % i === 0){
-        isPrime = false;
+if(number2 <= 1){
+    isPrime = false;
+}else {
+    for (let i = 2; i < number2; i++) {
+        if (number2 % i === 0) {
+            isPrime = false;
+        }
     }
-}
+}   
 console.log(isPrime ? "Yes" : "No");
 
 //task 5
