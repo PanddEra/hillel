@@ -2,15 +2,7 @@
 
 const numbers = [16, -37, 54, -4, 72, -56, 47, 4, -16, 25, -37, 46, 4, -51, 27, -63, 4, -54, 76, -4, 12, -35, 4, 47];
 
-// 1
-const min = Math.min(...numbers);
-console.log('Min: ' + min + '; Index: ' + numbers.indexOf(min));
-
-// 2
-const max = Math.max(...numbers);
-console.log('Max: ' + max + '; Index: ' + numbers.indexOf(max));
-
-// 3
+//1
 let countPositive = 0;
 let sumPositive = 0;
 for (const num of numbers) {
@@ -21,6 +13,15 @@ for (const num of numbers) {
 }
 console.log('Count of positive numbers: ' + countPositive);
 console.log('Sum of positive numbers: ' + sumPositive);
+
+
+// 2
+const min = Math.min(...numbers);
+console.log('Min: ' + min + '; Index: ' + numbers.indexOf(min));
+
+// 3
+const max = Math.max(...numbers);
+console.log('Max: ' + max + '; Index: ' + numbers.indexOf(max));
 
 // 4
 const countNegative = numbers.filter(num => num < 0).length;
