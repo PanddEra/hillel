@@ -1,14 +1,14 @@
 'use strict';
 
-const call = (fn, context = window, ...args) => {
-    return context.fn(...args);
-};
-
-const apply = (fn, context = window, args) => {
+const call = (fn, ...args) => {
     fn(...args);
 };
 
-const bind = (fn, context = window, ...bindArgs) => {
+const apply = (fn, args) => {
+    fn(...args);
+};
+
+const bind = (fn, ...bindArgs) => {
     return (...callArgs) => fn(...bindArgs, ...callArgs);
 }
 
