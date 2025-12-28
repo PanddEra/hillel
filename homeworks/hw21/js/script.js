@@ -1,24 +1,43 @@
 'use strict';
 
-const call = (fn, ...args) => {
-    fn(...args);
-};
-
-const apply = (fn, args) => {
-    fn(...args);
-};
-
-const bind = (fn, ...bindArgs) => {
-    return (...callArgs) => fn(...bindArgs, ...callArgs);
+function wireContext(fn, context, ...args){ // function for wiring context for call/apply
+    context.tempFn = fn;
+   const result = args?.length ? context.tempFn(...args) : null;
+    delete context.tempFn;
+    
+    return result;
 }
 
-function sayHi(name){
-    console.log(name);
+const call = (fn, context, ...args) => {
+    return wireContext(fn, context, args);
+};
+
+const apply = (fn, context, args) => {
+    return wireContext(fn, context, args);
+};
+
+const bind = (fn, context, args) => {
+    return function (){
+        return wireContext(fn, context, args);
+    }
 }
 
-call(sayHi, 'Mickey');
-apply(sayHi, ['Mickey', 'Sneaky']);
-const hi = bind(sayHi, 'Mickey');
-hi();
+//---
+function getAndDisplayAge(age){
+    console.log(this.age);
+    return this.age;
+}
+
+const user = {
+    firstName: 'John',
+    lastName: 'Doe',
+    age: 32
+}
+
+call(getAndDisplayAge, user);
+apply(getAndDisplayAge, user);
+const bindFn = bind(getAndDisplayAge, user);
+bindFn();
+
 
 
