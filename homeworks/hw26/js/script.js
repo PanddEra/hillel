@@ -96,27 +96,41 @@ const validateInputs = (inputs, singleInput = null) => {
     return Object.keys(errors).length > 0 ? errors : false;
 };
 
+// Validation errors handling
 const showErrors = (errors) => {
+    const inputs = form.querySelectorAll('input, select');
     const errorBoxesTemp = document.querySelectorAll('.error-msg');
-    for (let i = 0; i < errorBoxesTemp.length; i++) {
-        errorBoxesTemp[i].textContent = '';
-    }
+
+    inputs.forEach(el => el.classList.remove('invalid'));
+    errorBoxesTemp.forEach(el => el.textContent = '');
 
     if (!errors) return;
 
-    let errorBoxTemp;
     for (const err in errors) {
-        errorBoxTemp = document.querySelector(`[data-error="${err}"]`);
-        if (errorBoxTemp) {
-            errorBoxTemp.textContent = errors[err];
-        }
+        const input = form.querySelector(`[name="${err}"]`);
+        const box = document.querySelector(`[data-error="${err}"]`);
+
+        if (box) box.textContent = errors[err];
+        if (input) input.classList.add('invalid');
     }
 };
 
+// Display JSON on DOMContentLoader
 window.addEventListener('DOMContentLoaded', () => {
-    addUserData(JSON.parse(localStorage.getItem('formData')));
+    const users = JSON.parse(localStorage.getItem('formData')) || [];
+    addUserData(users);
+
+    if (users.length > 0) {
+        const last = users[users.length - 1];
+        for (const key in last) {
+            const input = form.querySelector(`[name="${key}"]`);
+            if (!input) continue;
+            input.type === 'checkbox' ? input.checked = last[key] : input.value = last[key];
+        }
+    }
 });
 
+// Live-validation on focusout
 const allInputs = form.querySelectorAll('input, select');
 
 for (let i = 0; i < allInputs.length; i++) {
@@ -135,6 +149,7 @@ for (let i = 0; i < allInputs.length; i++) {
     });
 }
 
+// submit-validation
 form.addEventListener('submit', e => {
     e.preventDefault();
 
@@ -158,13 +173,13 @@ form.addEventListener('submit', e => {
     showErrors(false);
     form.reset();
 
-    let users = JSON.parse(localStorage.getItem('formData')) || [];
-    users.push(data);
-    localStorage.setItem('formData', JSON.stringify(users));
-    addUserData(users);
+    localStorage.setItem('formData', JSON.stringify(data));
+    addUserData(data);
 });
 
+// Clear button
 document.getElementById('reset-btn').addEventListener('click', () => {
     localStorage.removeItem('formData');
+    form.reset();
     document.querySelector('[data-json-users]').textContent = '';
 })
