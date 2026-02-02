@@ -49,7 +49,7 @@ Student.prototype.mark = function (mark) {
 Student.prototype.summary = function () {
     const averageMark = this.getAverageMark();
     const filteredAttendance = this.attendance.filter(el => el !== undefined); // only filled records
-    const averageAttendance = this.attendance.reduce((sum, currentValue) => sum + currentValue, 0) / this.attendance.length;
+    const averageAttendance = filteredAttendance.reduce((sum, currentValue) => sum + currentValue, 0) / filteredAttendance.length;
 
     // console.log('Average mark: ' + averageMark);
     // console.log('Average attendance: ' + averageAttendance);
