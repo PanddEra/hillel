@@ -14,7 +14,8 @@ Student.prototype.getAge = function () {
     return new Date().getFullYear() - this.birthYear;
 }
 Student.prototype.getAverageMark = function () {
-    return this.marks.reduce((sum, currentValue) => sum + currentValue, 0) / this.marks.length;
+    const filteredMarks = this.marks.filter(mark => mark !== undefined); // use only filled marks
+    return filteredMarks.reduce((sum, currentValue) => sum + currentValue, 0) / filteredMarks.length;
 }
 Student.prototype.present = function () {
     const firstEmptyIndex = this.attendance.findIndex(el => el === undefined);
@@ -47,6 +48,7 @@ Student.prototype.mark = function (mark) {
 }
 Student.prototype.summary = function () {
     const averageMark = this.getAverageMark();
+    const filteredAttendance = this.attendance.filter(el => el !== undefined); // only filled records
     const averageAttendance = this.attendance.reduce((sum, currentValue) => sum + currentValue, 0) / this.attendance.length;
 
     // console.log('Average mark: ' + averageMark);
