@@ -1,6 +1,6 @@
 'use strict'
 
-import {Student} from './Student.js'
+import Student from './Student.js';
 
 const student1 = new Student('Ronnie', 'Coleman', 2020);
 for (let i = 0; i < 25; i++) {
