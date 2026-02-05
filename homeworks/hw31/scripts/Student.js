@@ -1,11 +1,6 @@
 'use strict'
 
 class Student {
-  firstName = null;
-  lastName = null;
-  birthYear = null;
-  marks = [];
-  attendance = new Array(25);
   constructor (firstName, lastName, birthYear) {
       this.firstName = firstName;
       this.lastName = lastName;
