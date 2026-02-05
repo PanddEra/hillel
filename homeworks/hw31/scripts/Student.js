@@ -66,3 +66,5 @@ summary() {
   }
 }
 }
+
+export default Student;
