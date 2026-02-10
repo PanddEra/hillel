@@ -29,9 +29,9 @@ Use case: When you want to fix the object structure but still allow updating val
 const obj = { a: 1 };
 Object.freeze(obj);
 
-obj.a = 2;      // ❌ Cannot change (TypeError in strict mode)
-obj.b = 3;      // ❌ Cannot add
-delete obj.a;   // ❌ Cannot delete
+obj.a = 2;      // Cannot change
+obj.b = 3;      // Cannot add
+delete obj.a;   // Cannot delete
 console.log(Object.isFrozen(obj)); // true
 ```
 Use case: When you want a completely immutable object, like constants.
@@ -49,21 +49,9 @@ Use case: When you want a completely immutable object, like constants.
 
 **Freeze → locks everything, fully immutable.**
 
-**Both are shallow, and freeze blocks setter modifications (TypeError in strict mode).**
+**Both are shallow**
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+----------------------------------------------------------
 Мета
 
 Закріпити `Object.defineProperty`, прапорці `writable/enumerable/configurable`, `getter/setter`, `freeze/seal`.
