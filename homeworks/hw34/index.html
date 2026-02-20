@@ -26,20 +26,25 @@
     </div>
 </nav>
 <main class="h-75 w-25 d-flex flex-column justify-content-center align-items-center">
-    <div class="h-100 d-flex justify-content-center align-items-center">
+    <div class="h-100 p-4 d-flex justify-content-center align-items-center bg-light border border-black rounded-3">
         <form data-form>
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" required>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="title" placeholder="Title" required>
+                <label for="title">Title</label>
             </div>
             <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" required>
+                <select class="form-select" aria-label="Default select example">
+                    <option value="">Choose category</option>
+                    <option value="work">Work</option>
+                    <option value="study">Study</option>
+                    <option value="personal">Personal</option>
+                </select>
             </div>
             <div class="mb-3">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                <input type="checkbox" class="form-check-input" id="important">
+                <label class="form-check-label" for="important">Is important?</label>
             </div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
