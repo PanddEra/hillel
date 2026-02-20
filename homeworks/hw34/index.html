@@ -25,30 +25,53 @@
         </form>
     </div>
 </nav>
-<main class="h-75 w-25 d-flex flex-column justify-content-center align-items-center">
-    <div class="h-100 p-4 d-flex justify-content-center align-items-center bg-light border border-black rounded-3">
-        <form data-form>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="title" placeholder="Title" required>
-                <label for="title">Title</label>
+<div class="h-100 d-flex align-items-center">
+    <div class="h-75 w-25 d-flex flex-column justify-content-center align-items-center">
+        <div class="h-100 w-75 p-4 d-flex flex-column justify-content-center align-items-center bg-light border border-black rounded-3">
+            <div>
+                <p>Add your note below</p>
             </div>
-            <div class="mb-3">
-                <select class="form-select" aria-label="Default select example">
-                    <option value="">Choose category</option>
-                    <option value="work">Work</option>
-                    <option value="study">Study</option>
-                    <option value="personal">Personal</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <input type="checkbox" class="form-check-input" id="important">
-                <label class="form-check-label" for="important">Is important?</label>
-            </div>
+            <form class="w-100" data-form>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="title" placeholder="Title" required>
+                    <label for="title">Title</label>
+                </div>
+                <div class="mb-3">
+                    <select class="form-select" aria-label="Default select example" required>
+                        <option value="">Choose category</option>
+                        <option value="work">Work</option>
+                        <option value="study">Study</option>
+                        <option value="personal">Personal</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <input type="checkbox" class="form-check-input" id="important">
+                    <label class="form-check-label" for="important">Is important?</label>
+                </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+                <button type="submit" class="btn btn-primary w-100 mb-4">Add note</button>
+                <button type="button" class="btn btn-danger w-100">Delete all</button>
+            </form>
+        </div>
     </div>
-</main>
+
+    <section class="container d-grid gap-3 h-75">
+<!--        <div class="">-->
+<!--            <div class="card" style="width: 18rem;">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title">Title <span class="badge text-bg-warning">Important</span></h5>-->
+<!--                    <p class="">Category</p>-->
+
+<!--                    <button type="button" class="btn btn-warning ">Mark important</button>-->
+<!--                    <button type="button" class="btn btn-secondary d-none">Unmark important</button>-->
+<!--                    <button type="button" class="btn btn-danger">Delete</button>-->
+
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+    </section>
+</div>
+
 <footer class="d-flex justify-content-between align-content-center bg-secondary text-light">
     <p class="m-3">Powered by Company</p>
     <p class="m-3">Simple Notes Application</p>
