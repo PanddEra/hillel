@@ -1,9 +1,25 @@
 'use strict';
 
+import createModal from "../../../../hw28/scripts/modules/modalGenerator";
+
 class Controller {
     _currentItemId = 0;
-    constructor(){}
+    #model = null;
+    #view = null;
 
+    constructor(model, view) {
+        this.#model = model;
+        this.#view = view;
+    }
+
+    #onLoadHandler = () => {
+        const savedData = this.#model.readAll()
+        if (!savedData.length) {
+            return;
+        }
+        
+        //TODO
+    }
 
     #submitHandler = (event) => {
         event.preventDefault();
@@ -11,11 +27,18 @@ class Controller {
         const inputs = form.querySelectorAll('input:not([type="submit"]), textarea, select');
         const data = {};
         inputs.forEach(({name, value}) => data[name] = value);
-        if(!this.#validateData(data)) return;
-        
+        this.#createItem(data);
     }
-    
-    #validateData = (data) => {
-        
+
+    #clearAllHandler = () => {
+        this.#model.clearAll();
+    }
+
+    #deleteItemHandler = (id) => {
+        this.#model.delete(id);
+    }
+
+    #createItem = (data) => {
+        this.#model.create(data);
     }
 }
