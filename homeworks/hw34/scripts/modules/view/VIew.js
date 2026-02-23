@@ -1,20 +1,19 @@
 export class View {
-    itemsContainer = document.querySelector('[data-items-conatiner]');
+    itemsContainer = document.querySelector('[data-items-container]');
     form = document.querySelector('[data-form]');
     clearAllTrigger = document.querySelector('[data-deleteAll-btn]');
+
     constructor() {
 
     }
 
     #addNoDataToDisplayBlock = () => {
-        this.itemsContainer.textContent = `
-<div class="alert alert-warning" role="alert">
-  NO DATA TO DISPLAY!
-</div>`;
+        const noDataToDisplay = `<div class="alert alert-warning d-flex justify-content-center align-items-center w-100" role="alert">NO DATA TO DISPLAY!</div>`;
+        this.itemsContainer.innerHTML = noDataToDisplay;
     }
 
-    #removeNoDataFromDisplayBlock = () => {
-        this.itemsContainer.textContent = ``;
+    #clearContainer = () => {
+        this.itemsContainer.innerHTML = ``;
     }
 
     #createItemTemplate({title, category, isImportant, id}) {
@@ -28,7 +27,7 @@ export class View {
                    <div class="card-body">
                         <h5 class="card-title">
 ${title}
-${!isImportant ? `<span class="badge text-bg-warning">Important</span>` : ''}
+${isImportant ? `<span class="badge text-bg-warning">Important</span>` : ''}
 </h5>
                         <p class="">${category}</p>
                         <button type="button" class="btn btn-warning" data-toggleImportant-btn>Toggle important</button>
@@ -42,7 +41,7 @@ ${!isImportant ? `<span class="badge text-bg-warning">Important</span>` : ''}
     }
 
     renderItems(data) {
-        if(data === '') {
+        if (!data || data.length === 0) {
             this.#addNoDataToDisplayBlock();
             return;
         }
@@ -53,35 +52,37 @@ ${!isImportant ? `<span class="badge text-bg-warning">Important</span>` : ''}
             itemsContainerClone.appendChild(template);
         })
 
-        this.#removeNoDataFromDisplayBlock();
+        this.#clearContainer();
         this.itemsContainer.replaceWith(itemsContainerClone);
         this.itemsContainer = itemsContainerClone;
     }
 
     renderItem = (item) => {
-        if(this.containerIsEmpty()) this.#removeNoDataFromDisplayBlock();
-        this.itemsContainer.appendChild(item);
+        if (this.containerIsEmpty() || this.itemsContainer.innerHTML === `<div class="alert alert-warning d-flex justify-content-center align-items-center" role="alert">NO DATA TO DISPLAY!</div>`) {
+            this.#clearContainer();
+        }
+        const template = this.#createItemTemplate(item);
+        this.itemsContainer.appendChild(template);
     }
 
-    toggleImportant = (id) => {
-        const elementToUpdate = this.itemsContainer.querySelector(`[data-id="${id}"]`);
-        const newItem = this.#createItemTemplate(elementToUpdate)
-        newItem.isImportant ? newItem.isImportant = false : newItem.isImportant = true;
-        elementToUpdate.replaceWith(newItem);
+    updateItem(note) {
+        const oldElement = this.itemsContainer.querySelector(`[data-id="${note.id}"]`);
+        const newElement = this.#createItemTemplate(note);
+        oldElement.replaceWith(newElement);
     }
 
     clearAll = () => {
-        this.itemsContainer.textContent = '';
+        this.itemsContainer.textContent = ' ';
         this.#addNoDataToDisplayBlock();
     }
 
     delete = (id) => {
-        this.itemsContainer.querySelector(`[data-id='.${id}']`).remove();
-        if(this.containerIsEmpty()) this.#addNoDataToDisplayBlock();
+        this.itemsContainer.querySelector(`[data-id='${id}']`).remove();
+        if (this.containerIsEmpty()) this.#addNoDataToDisplayBlock();
 
     }
 
     containerIsEmpty = () => {
-        return !!this.itemsContainer;
+        return this.itemsContainer.children.length === 0;
     }
 }

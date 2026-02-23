@@ -20,37 +20,41 @@ export class Controller {
     }
 
     #onLoadHandler = () => {
-        let savedData = this.#model.readAll();
-        console.log(savedData);
-        if (savedData < 0) {
+        const savedData = this.#model.readAll();
+        if (!savedData || savedData.length === 0) {
+            this.#view.clearAll();
             return;
         }
-        const arrayFromData = Array(savedData);
-        console.log(arrayFromData);
-        this.#view.renderItems(arrayFromData);
+        this.#view.renderItems(savedData);
     }
 
     #submitHandler = (event) => {
         event.preventDefault();
         const {target: form} = event;
-        const inputs = form.querySelectorAll('input:not([type="submit"]), text, textarea, select');
-        const data = {};
-        inputs.forEach((item) => {
-            if (item.name === 'isImportant') {
-                if (item.value === 'on') data[item.name] = true;
-                data[item.name] = false;
-            }else{
-                data[item.name] = item.value
-            }
-        });
-        console.log(inputs);
+        const formData = new FormData(form);
+        const data = {
+            id: crypto.randomUUID(),
+            title: formData.get('title'),
+            category: formData.get('category'),
+            isImportant: formData.get('isImportant') === 'on',
+            createdAt: new Date().toISOString()
+        };
         console.log(data);
         this.#createItem(data);
+        form.reset();
     }
 
-    #toggleImportant = (id) => {
+    #toggleImportant = (event) => {
+        const btn = event.target.closest('[data-toggleImportant-btn]');
+        if (!btn) return;
+
+        const item = btn.closest('[data-id]');
+        const id = item.dataset.id;
+
         this.#model.toggleImportant(id);
-        this.#view.toggleImportant(this.#model.get(id));
+
+        const updated = this.#model.readAll().find(n => n.id === id);
+        this.#view.updateItem(updated);
     }
 
     #clearAllHandler = () => {
@@ -58,12 +62,22 @@ export class Controller {
         this.#view.clearAll();
     }
 
-    #deleteItemHandler = (id) => {
+    #deleteItemHandler = (event) => {
+        const btn = event.target.closest('[data-deleteItem-btn]');
+        if (!btn) return;
+
+        const item = btn.closest('[data-id]');
+        const id = item.dataset.id;
+
         this.#model.delete(id);
         this.#view.delete(id);
     }
 
     #createItem = (data) => {
+        if (data.title.trim().length < 3) {
+            alert('Title must be at least 3 characters');
+            return;
+        }
         this.#model.create(data);
         this.#view.renderItem(data);
     }

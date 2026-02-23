@@ -38,6 +38,7 @@ export class StorageModel {
     }
 
     _hasItem(id) {
-        return this.#hasItem();
+        const data = this.#get();
+        return data && data.some(item => item.id === id);
     }
 }

@@ -4,6 +4,7 @@ import {NoteModel} from "./modules/model/NoteModel.js";
 import {View} from "./modules/view/View.js";
 import {Controller} from "./modules/controller/Controller.js";
 const notesValidationModel = {
+    id: 'string',
     title: 'string',
     category: ['work', 'study', 'personal'],
     isImportant: 'boolean',

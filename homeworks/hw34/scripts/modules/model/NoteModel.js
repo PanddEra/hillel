@@ -8,9 +8,11 @@ export class NoteModel extends StorageModel {
 
     constructor(validationModel) {
         super();
-        this.#notesList = [];
+        this.key = 'notes';
         this.#validationModel = validationModel;
 
+        const saved = this._getAll();
+        this.#notesList = saved ? saved : [];
     }
 
     #validateNote(data) {
@@ -44,14 +46,9 @@ export class NoteModel extends StorageModel {
     }
 
     create(data) {
-        if (!this._hasItem(data)) {
-            this.#validateNote(data);
-            this.#notesList.push(data);
-            this._setItem(data);
-        } else {
-            //TODO error handling
-        }
-
+        this.#validateNote(data);
+        this.#notesList.push(data);
+        this._setItem(this.#notesList); // Save the entire list
     }
 
     readAll() {
@@ -59,27 +56,25 @@ export class NoteModel extends StorageModel {
     }
 
     toggleImportant(id) {
-        if (this._hasItem(this.#notesList[this.#findIndexInNotesList(id)])) {
-            const indexInArray = this.#findIndexInNotesList(id);
-            indexInArray.state = this.state === 'important' ? 'none' : 'important';
-            this._setItem(indexInArray);
-        } else {
-            //TODO error handling
-        }
+        const index = this.#findIndexInNotesList(id);
+        if (index === -1) return;
 
+        this.#notesList[index].isImportant =
+            !this.#notesList[index].isImportant;
+
+        this._setItem(this.#notesList);
     }
 
     delete(id) {
-        if (this._hasItem(this.#notesList[this.#findIndexInNotesList(id)])) {
-            const indexInArray = this.#findIndexInNotesList(id);
-            this.#notesList.splice(indexInArray, 1);
-            this._setItem(indexInArray);
-        } else {
-            //TODO error handling
+        const index = this.#findIndexInNotesList(id);
+        if (index !== -1) {
+            this.#notesList.splice(index, 1);
+            this._setItem(this.#notesList);
         }
     }
 
     clearAll() {
+        this.#notesList = [];
         this._clearAll();
     }
 }
