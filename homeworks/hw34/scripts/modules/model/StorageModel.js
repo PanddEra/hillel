@@ -3,6 +3,10 @@
 export class StorageModel {
     key = null;
 
+    constructor() {
+
+    }
+
     #get() {
         return JSON.parse(
             localStorage.getItem(this.key)

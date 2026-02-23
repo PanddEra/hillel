@@ -33,11 +33,11 @@
             </div>
             <form class="w-100" data-form>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="title" placeholder="Title" required>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Title" required>
                     <label for="title">Title</label>
                 </div>
                 <div class="mb-3">
-                    <select class="form-select" aria-label="Default select example" required>
+                    <select class="form-select" name="category" aria-label="Default select example" required>
                         <option value="">Choose category</option>
                         <option value="work">Work</option>
                         <option value="study">Study</option>
@@ -45,30 +45,30 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <input type="checkbox" class="form-check-input" id="important">
+                    <input type="checkbox" class="form-check-input" name="isImportant" id="important">
                     <label class="form-check-label" for="important">Is important?</label>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 mb-4">Add note</button>
-                <button type="button" class="btn btn-danger w-100">Delete all</button>
+                <button type="submit" class="btn btn-primary w-100 mb-4" data-add-btn>Add note</button>
+                <button type="button" class="btn btn-danger w-100" data-deleteAll-btn>Delete all</button>
             </form>
         </div>
     </div>
 
-    <section class="container d-grid gap-3 h-75">
-<!--        <div class="">-->
-<!--            <div class="card" style="width: 18rem;">-->
-<!--                <div class="card-body">-->
-<!--                    <h5 class="card-title">Title <span class="badge text-bg-warning">Important</span></h5>-->
-<!--                    <p class="">Category</p>-->
+    <section class="container d-grid gap-3 h-75" data-items-conatiner>
+        <!--        <div class="">-->
+        <!--            <div class="card" style="width: 18rem;">-->
+        <!--                <div class="card-body">-->
+        <!--                    <h5 class="card-title">Title <span class="badge text-bg-warning">Important</span></h5>-->
+        <!--                    <p class="">Category</p>-->
 
-<!--                    <button type="button" class="btn btn-warning ">Mark important</button>-->
-<!--                    <button type="button" class="btn btn-secondary d-none">Unmark important</button>-->
-<!--                    <button type="button" class="btn btn-danger">Delete</button>-->
+        <!--                    <button type="button" class="btn btn-warning ">Mark important</button>-->
+        <!--                    <button type="button" class="btn btn-secondary d-none">Unmark important</button>-->
+        <!--                    <button type="button" class="btn btn-danger">Delete</button>-->
 
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </section>
 </div>
 

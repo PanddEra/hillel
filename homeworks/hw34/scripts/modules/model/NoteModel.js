@@ -1,14 +1,16 @@
 'use strict';
 
-import {StorageModel} from "./StorageModel";
+import {StorageModel} from "./StorageModel.js";
 
-class NoteModel extends StorageModel {
+export class NoteModel extends StorageModel {
     #notesList = null;
     #validationModel = null;
 
     constructor(validationModel) {
+        super();
         this.#notesList = [];
         this.#validationModel = validationModel;
+
     }
 
     #validateNote(data) {
