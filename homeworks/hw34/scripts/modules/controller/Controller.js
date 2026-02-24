@@ -39,7 +39,6 @@ export class Controller {
             isImportant: formData.get('isImportant') === 'on',
             createdAt: new Date().toISOString()
         };
-        console.log(data);
         this.#createItem(data);
         form.reset();
     }
