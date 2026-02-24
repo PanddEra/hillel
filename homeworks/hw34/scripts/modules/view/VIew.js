@@ -13,7 +13,7 @@ export class View {
     }
 
     #clearContainer = () => {
-        this.itemsContainer.innerHTML = ``;
+        this.itemsContainer.removeChild(this.itemsContainer.firstChild);
     }
 
     #createItemTemplate({title, category, isImportant, id}) {
@@ -45,7 +45,6 @@ ${isImportant ? `<span class="badge text-bg-warning">Important</span>` : ''}
             this.#addNoDataToDisplayBlock();
             return;
         }
-        console.log(data)
         const itemsContainerClone = this.itemsContainer.cloneNode();
         data.forEach((item) => {
             const template = this.#createItemTemplate(item);
@@ -58,9 +57,10 @@ ${isImportant ? `<span class="badge text-bg-warning">Important</span>` : ''}
     }
 
     renderItem = (item) => {
-        if (this.containerIsEmpty() || this.itemsContainer.innerHTML === `<div class="alert alert-warning d-flex justify-content-center align-items-center" role="alert">NO DATA TO DISPLAY!</div>`) {
+        if (this.containerIsEmpty() || this.itemsContainer.innerHTML === `<div class="alert alert-warning d-flex justify-content-center align-items-center w-100" role="alert">NO DATA TO DISPLAY!</div>`) {
             this.#clearContainer();
         }
+
         const template = this.#createItemTemplate(item);
         this.itemsContainer.appendChild(template);
     }
