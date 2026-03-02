@@ -19,8 +19,8 @@ selectUser.addEventListener('change', () => {
     selectAlbum.disabled = true;
     loadButton.disabled = true;
     status.textContent = 'Loading albums...'
-    fetch(`https://jsonplaceholder.typicode.com/albums?userId=${selectUser.id}`)
-        .then(data => setSelectAlbumData(selectAlbum, data));
+    fetch(`https://jsonplaceholder.typicode.com/albums?userId=${selectUser.value}`)
+        .then(data => setSelectAlbumData(selectAlbum, data.json()));
     selectAlbum.disabled = false;
     status.textContent = '';
 })
@@ -29,18 +29,24 @@ selectAlbum.addEventListener('change', () => {
     loadButton.disabled = !(selectAlbum.value !== null || selectAlbum.value !== '');
 })
 
+loadButton.addEventListener('click', () => {
+    photos.textContent = '';
+    status.textContent = 'Loading photos...'
+    fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${selectAlbum.value}`)
+        .then(data => loadPhotos(data.json()));
+})
+
 const setSelectUserData = (select, data) => {
-    data.forEach(element => temp(element))
-    const temp = (element) => {
-        select.text = element.name;
-        select.value = element.id;
-    }
+    data.forEach(element =>  select.textContent += `<option value ='${element.id}'>${element.title}</option>`)
 }
 
 const setSelectAlbumData = (select, data) => {
+    data.forEach(element =>  select.textContent += `<option value ='${element.id}'>${element.name}</option>`)
+}
+
+const loadPhotos = (data) => {
     data.forEach(element => {
-        select.text = element.title;
-        select.value = element.id;
+        photos.textContent += element;
     })
 }
 
