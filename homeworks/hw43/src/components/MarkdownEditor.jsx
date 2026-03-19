@@ -15,9 +15,6 @@ const MarkdownEditor = ({height = '500px', onContentChange}) => {
         editor.addHook('change', () => {
             onContentChange(editor.getMarkdown());
         })
-        return () => {
-            editor.destroy();
-        };
     }, []);
 
 
