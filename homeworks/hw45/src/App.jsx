@@ -1,12 +1,14 @@
 import AddItemForm from "./components/Form/AddItemForm";
 import { useState } from "react";
 import uuid from 'uuid-random';
-import {Container, Row, Col, Button} from "react-bootstrap";
+import {Container, Row, Col} from "react-bootstrap";
 import ItemsList from "./components/ItemsList/List";
 import ModalGenerator from "./components/Form/ModalGenerator";
 
 function App() {
     const [items, setItems] = useState([]); //TODO: add/get items to/from localStorage
+    const [showModal, setShowModal] = useState(false);
+    const [editingItemId, setEditingItemId] = useState(null);
 
     const handleAddItemFormSubmit = (data) => {
         const newItem = {
@@ -21,15 +23,14 @@ function App() {
     }
 
     const handleEditItem = (id) => {
-        console.log("handleEditItem")
-        return <ModalGenerator header='Edit Item' body={<AddItemForm onSubmit={(data) => {
-            const newItem = {
-                ...data,
-                id: id
-            };
-            setItems(prev => [newItem, ...prev]);
-        }}/>}/>
-    }
+        setEditingItemId(id);
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setEditingItemId(null);
+    };
 
     return (
         <Container className="mt-5">
@@ -43,6 +44,30 @@ function App() {
                     <ItemsList items={items} onDelete={handleDeleteItem} onEdit={handleEditItem}/>
                 </Col>
             </Row>
+            {showModal && (
+                <ModalGenerator
+                    show={showModal}
+                    onHide={handleCloseModal}
+                    header="Edit Item"
+                    body={
+                        <AddItemForm
+                            onSubmit={(data) => {
+                                const updatedItem = {
+                                    ...data,
+                                    id: editingItemId
+                                };
+                                setItems(prev =>
+                                    prev.map(item =>
+                                        item.id === editingItemId ? updatedItem : item
+                                    )
+                                );
+                                handleCloseModal();
+                            }}
+                        />
+                    }
+                    footer={null}
+                />
+            )}
         </Container>
     )
 }
