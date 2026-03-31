@@ -1,37 +1,46 @@
 import AddItemForm from "./components/Form/AddItemForm";
 import { useState } from "react";
 import uuid from 'uuid-random';
-import { ListGroup, Container, Row, Col } from "react-bootstrap";
-import Item from "./components/Item";
+import {Container, Row, Col, Button} from "react-bootstrap";
+import ItemsList from "./components/ItemsList/List";
+import ModalGenerator from "./components/Form/ModalGenerator";
 
 function App() {
-    const [todoItems, setTodoItems] = useState([]);
+    const [items, setItems] = useState([]); //TODO: add/get items to/from localStorage
 
-    const handleSubmit = (data) => {
-        const newTodo = {
+    const handleAddItemFormSubmit = (data) => {
+        const newItem = {
             ...data,
-            id: uuid(),
-            completed: false
+            id: uuid()
         };
-        
-        setTodoItems(prev => [newTodo, ...prev]);
+        setItems(prev => [newItem, ...prev]);
+    }
+    
+    const handleDeleteItem = (id) => {
+        setItems(prev => prev.filter(item => item.id !== id));
+    }
+
+    const handleEditItem = (id) => {
+        console.log("handleEditItem")
+        return <ModalGenerator header='Edit Item' body={<AddItemForm onSubmit={(data) => {
+            const newItem = {
+                ...data,
+                id: id
+            };
+            setItems(prev => [newItem, ...prev]);
+        }}/>}/>
     }
 
     return (
         <Container className="mt-5">
             <Row className="justify-content-center">
                 <Col md={6}>
-                    <h1 className="text-center mb-4">Add item</h1>
-
-                    <AddItemForm onSubmit={handleSubmit}/>
-
-                    <ListGroup className="mt-4">
-                        {todoItems.map(item => <Item key={item.id} item={item}/>)}
-                    </ListGroup>
-
-                    {todoItems.length === 0 && (
-                        <p className="text-center mt-3 text-muted">List is empty. It's time to add something!</p>
-                    )}
+                    <h1 className="text-center mb-4">Add new item</h1>
+                    <AddItemForm onSubmit={handleAddItemFormSubmit}/>
+                </Col>
+                <Col md={6}>
+                    <h1 className="text-center mb-4">Items List</h1>
+                    <ItemsList items={items} onDelete={handleDeleteItem} onEdit={handleEditItem}/>
                 </Col>
             </Row>
         </Container>

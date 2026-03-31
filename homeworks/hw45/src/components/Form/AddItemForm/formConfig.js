@@ -10,7 +10,7 @@ export const inputs = [
     {id: 7, name: "sku", label: 'SKU', className:'mb-3', type: 'text'},
     {id: 8, name: "quantity", label: 'Quantity', className:'mb-3', type: 'number'},
     {id: 9, name: "mainImgUrl", label: 'Main image (URL)', className:'mb-3', type: 'text'},
-    {id: 10, name: "additionalImgUrls", label: 'Additional images (URLs)', className:'mb-3', type: 'textarea'},
+    {id: 10, name: "additionalImgUrl", label: 'Additional image (URL)', className:'mb-3', type: 'textarea'},
     {id: 11, name: "isActive", label: 'Is active', className:'mb-3', type: 'checkbox'},
     {id: 12, name: "isAvailable", label: 'Is available', className:'mb-3', type: 'checkbox'},
     {id: 13, name: "showOnHomePage", label: 'Show on home page', className:'mb-3', type: 'checkbox'}
@@ -53,7 +53,7 @@ export const initialValues = {
     sku: "",
     quantity: "",
     mainImgUrl: "",
-    additionalImgUrls: "",
+    additionalImgUrl: "",
     isActive: true,
     isAvailable: true,
     showOnHomePage: false
