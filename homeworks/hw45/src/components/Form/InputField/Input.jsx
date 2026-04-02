@@ -1,4 +1,4 @@
-import {FloatingLabel, Form, FormLabel} from "react-bootstrap";
+import {FloatingLabel, Form} from "react-bootstrap";
 import PropTypes from "prop-types";
 
 function Input({

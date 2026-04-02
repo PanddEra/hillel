@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {v4 as uuidv4} from 'uuid';
 import {Container, Row, Col} from "react-bootstrap";
 import ItemsList from "./components/ItemsList/List";
-import EditItemForm from "./components/Form/EditItemForm/EditItemForm.jsx";
+import EditItemForm from "./components/Form/EditItemForm";
 
 function App() {
     const [items, setItems] = useState(() => {

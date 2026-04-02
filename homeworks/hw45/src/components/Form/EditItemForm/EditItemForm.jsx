@@ -1,6 +1,6 @@
-import ItemForm from "../ItemForm/index.js";
+import ItemForm from "../ItemForm";
 import {initialValues, inputs, validationSchema} from "../ItemForm/formConfig.js";
-import ModalGenerator from "../../ModalGenerator/index.js";
+import ModalGenerator from "../../ModalGenerator";
 import PropTypes from "prop-types";
 
 function EditItemForm({onSubmit, editingItemId, items, showModal, handleCloseModal}) {
