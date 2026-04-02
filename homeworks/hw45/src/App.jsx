@@ -41,10 +41,10 @@ function App() {
 
 
     return (
-        <Container className="mt-5">
-            <Row className="justify-content-center">
+        <Container className="admin-container">
+            <Row>
                 <Col md={4}>
-                    <div style={{ position: "sticky", top: "20px" }}>
+                    <div className="form-sidebar">
                         <h1 className="text-center mb-4">Add new item</h1>
                         <AddItemForm onSubmit={handleAddItemFormSubmit} />
                     </div>

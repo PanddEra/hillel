@@ -14,7 +14,7 @@ function ItemForm({onSubmit, initialValues, validationSchema, inputs, formTitle,
     });
 
     return (
-        <Form onSubmit={formik.handleSubmit} className="p-3 border rounded shadow-sm">
+        <Form onSubmit={formik.handleSubmit} className="product-form">
             <h4 className="mb-3">{formTitle}</h4>
             {inputs.map((input) => (
                 <Input
