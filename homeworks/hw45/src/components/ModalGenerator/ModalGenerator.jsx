@@ -1,4 +1,5 @@
 import Modal from 'react-bootstrap/Modal';
+import PropTypes from "prop-types";
 
 function ModalGenerator({header, body, footer, show, onHide}) {
     return (
@@ -12,6 +13,14 @@ function ModalGenerator({header, body, footer, show, onHide}) {
             <Modal.Footer>{footer}</Modal.Footer>
         </Modal>
     );
+}
+
+ModalGenerator.propTypes = {
+    header: PropTypes.string,
+    body: PropTypes.node.isRequired,
+    footer: PropTypes.node,
+    show: PropTypes.bool.isRequired,
+    onHide: PropTypes.func.isRequired
 }
 
 export default ModalGenerator;

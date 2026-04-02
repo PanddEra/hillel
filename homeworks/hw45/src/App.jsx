@@ -1,14 +1,20 @@
 import AddItemForm from "./components/Form/AddItemForm";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {v4 as uuidv4} from 'uuid';
 import {Container, Row, Col} from "react-bootstrap";
 import ItemsList from "./components/ItemsList/List";
 import EditItemForm from "./components/Form/EditItemForm/EditItemForm.jsx";
 
 function App() {
-    const [items, setItems] = useState([]); //TODO: add/get items to/from localStorage
-    const [showModal, setShowModal] = useState(false);
+    const [items, setItems] = useState(() => {
+        const saved = localStorage.getItem('items');
+        return saved ? JSON.parse(saved) : [];
+    });    const [showModal, setShowModal] = useState(false);
     const [editingItemId, setEditingItemId] = useState(null);
+
+    useEffect(() => {
+        localStorage.setItem('items', JSON.stringify(items));
+    }, [items]);
 
     const handleAddItemFormSubmit = (data) => {
         const newItem = {
@@ -16,7 +22,6 @@ function App() {
             id: uuidv4()
         };
         setItems(prev => [newItem, ...prev]);
-        console.log(items)
     }
     
     const handleDeleteItem = (id) => {
@@ -46,17 +51,11 @@ function App() {
                 </Col>
                 <Col md={8}>
                     <h1 className="text-center mb-4">Items List</h1>
-                    <Row>
-                        {items.map(item => (
-                            <Col key={item.id} lg={6}>
-                                <ItemsList
-                                    items={[item]}
-                                    onDelete={handleDeleteItem}
-                                    onEdit={handleEditItem}
-                                />
-                            </Col>
-                        ))}
-                    </Row>
+                    <ItemsList
+                        items={items}
+                        onDelete={handleDeleteItem}
+                        onEdit={handleEditItem}
+                    />
                 </Col>
             </Row>
             {showModal && <EditItemForm

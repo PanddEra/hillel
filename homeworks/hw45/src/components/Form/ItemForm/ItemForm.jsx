@@ -1,6 +1,7 @@
 import {Button, Form} from "react-bootstrap";
 import Input from "../InputField";
-import {useFormik} from "formik"; 
+import {useFormik} from "formik";
+import PropTypes from "prop-types";
 function ItemForm({onSubmit, initialValues, validationSchema, inputs, formTitle, formButton}) {
 
     const formik = useFormik({
@@ -8,6 +9,7 @@ function ItemForm({onSubmit, initialValues, validationSchema, inputs, formTitle,
         validationSchema,
         onSubmit: (values) => {
             onSubmit(values);
+            formik.resetForm()
         }
     });
 
@@ -36,8 +38,24 @@ function ItemForm({onSubmit, initialValues, validationSchema, inputs, formTitle,
             >
                 {formButton}
             </Button>
+            <Button 
+                type="reset"
+                variant="secondary"
+                onClick={formik.handleReset}
+                className="w-100 mt-2">
+                Clear Form
+            </Button>
         </Form>
     );
+}
+
+ItemForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    initialValues: PropTypes.object.isRequired,
+    validationSchema: PropTypes.object.isRequired,
+    inputs: PropTypes.arrayOf(PropTypes.object).isRequired,
+    formTitle: PropTypes.string.isRequired,
+    formButton: PropTypes.string.isRequired
 }
 
 export default ItemForm;

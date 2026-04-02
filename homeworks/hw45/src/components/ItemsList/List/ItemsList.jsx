@@ -1,5 +1,6 @@
 import {ListGroup} from "react-bootstrap";
 import Item from '../Item'
+import PropTypes from "prop-types";
 
 function ItemsList({items, onEdit, onDelete}) {
     return (
@@ -8,5 +9,9 @@ function ItemsList({items, onEdit, onDelete}) {
         </ListGroup>
     )
 }
-
+ItemsList.propTypes = {
+    items: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired
+};
 export default ItemsList;
