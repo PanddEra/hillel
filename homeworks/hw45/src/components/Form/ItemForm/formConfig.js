@@ -28,7 +28,8 @@ export const validationSchema = Yup.object(
             .min(1, "Price must be greater than 0")
             .required("Price is required"),
         discountedPrice: Yup.number()
-            .max(0, "Discounted price must be less than regular price"),
+            .min(0, "Price cannot be negative")
+            .max(Yup.ref('price'), "Discounted price must be less than regular price"),
         category: Yup.string().required("Category is required"),
         brand: Yup.string().required("Brand is required"),
         sku: Yup.string().required("SKU is required"),

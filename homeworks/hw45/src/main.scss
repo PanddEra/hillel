@@ -1,0 +1,47 @@
+$primary-color: #007bff;
+$danger-color: #dc3545;
+$warning-color: #ffc107;
+$bg-light: #f8f9fa;
+$shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, .075);
+$sticky-top-offset: 20px;
+
+.admin-container {
+  padding-top: 3rem;
+  background-color: $bg-light;
+  min-height: 100vh;
+
+  .form-sidebar {
+    position: sticky;
+    top: $sticky-top-offset;
+    z-index: 100;
+
+    .product-form {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: $shadow-sm;
+
+      h4 {
+        color: $primary-color;
+        border-bottom: 2px solid $bg-light;
+        padding-bottom: 10px;
+      }
+    }
+  }
+
+  .product-list-section {
+    .product-card {
+      transition: transform 0.2s ease-in-out;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      }
+
+      .card-img-top {
+        height: 200px;
+        object-fit: cover;
+      }
+    }
+  }
+}

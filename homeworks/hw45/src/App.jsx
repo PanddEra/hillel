@@ -1,19 +1,25 @@
 import AddItemForm from "./components/Form/AddItemForm";
-import { useState } from "react";
-import uuid from 'uuid-random';
+import {useEffect, useState} from "react";
+import {v4 as uuidv4} from 'uuid';
 import {Container, Row, Col} from "react-bootstrap";
 import ItemsList from "./components/ItemsList/List";
-import ModalGenerator from "./components/Form/ModalGenerator";
+import EditItemForm from "./components/Form/EditItemForm";
 
 function App() {
-    const [items, setItems] = useState([]); //TODO: add/get items to/from localStorage
-    const [showModal, setShowModal] = useState(false);
+    const [items, setItems] = useState(() => {
+        const saved = localStorage.getItem('items');
+        return saved ? JSON.parse(saved) : [];
+    });    const [showModal, setShowModal] = useState(false);
     const [editingItemId, setEditingItemId] = useState(null);
+
+    useEffect(() => {
+        localStorage.setItem('items', JSON.stringify(items));
+    }, [items]);
 
     const handleAddItemFormSubmit = (data) => {
         const newItem = {
             ...data,
-            id: uuid()
+            id: uuidv4()
         };
         setItems(prev => [newItem, ...prev]);
     }
@@ -32,42 +38,46 @@ function App() {
         setEditingItemId(null);
     };
 
+
+
     return (
-        <Container className="mt-5">
-            <Row className="justify-content-center">
-                <Col md={6}>
-                    <h1 className="text-center mb-4">Add new item</h1>
-                    <AddItemForm onSubmit={handleAddItemFormSubmit}/>
+        <Container className="admin-container">
+            <Row>
+                <Col md={4}>
+                    <div className="form-sidebar">
+                        <h1 className="text-center mb-4">Add new item</h1>
+                        <AddItemForm onSubmit={handleAddItemFormSubmit} />
+                    </div>
                 </Col>
-                <Col md={6}>
+                <Col md={8}>
                     <h1 className="text-center mb-4">Items List</h1>
-                    <ItemsList items={items} onDelete={handleDeleteItem} onEdit={handleEditItem}/>
+                    <ItemsList
+                        items={items}
+                        onDelete={handleDeleteItem}
+                        onEdit={handleEditItem}
+                    />
                 </Col>
             </Row>
-            {showModal && (
-                <ModalGenerator
-                    show={showModal}
-                    onHide={handleCloseModal}
-                    header="Edit Item"
-                    body={
-                        <AddItemForm
-                            onSubmit={(data) => {
-                                const updatedItem = {
-                                    ...data,
-                                    id: editingItemId
-                                };
-                                setItems(prev =>
-                                    prev.map(item =>
-                                        item.id === editingItemId ? updatedItem : item
-                                    )
-                                );
-                                handleCloseModal();
-                            }}
-                        />
-                    }
-                    footer={null}
-                />
-            )}
+            {showModal && <EditItemForm
+                onSubmit={(data) => {
+                    const updatedItem = {
+                        ...data,
+                        id: editingItemId
+                    };
+                    setItems(prev =>
+                        prev.map(item =>
+                            item.id === editingItemId ? updatedItem : item
+                        )
+                    );
+                    handleCloseModal();
+                }}
+                handleCloseModal={handleCloseModal}
+                editingItemId={editingItemId}
+                setEditingItemId={setEditingItemId}
+                items={items} setItems={setItems}
+                showModal={showModal}
+                setShowModal={setShowModal}
+            />}
         </Container>
     )
 }
