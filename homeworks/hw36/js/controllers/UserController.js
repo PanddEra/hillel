@@ -6,8 +6,10 @@ class UserController{
         this.view = view;
     }
     init(){
+        this.view.setLoading(true);
         document.addEventListener('DOMContentLoaded', async () => {
             const users = await this.model.getAll();
+            this.view.setLoading(false);
             this.view.renderTable(users);
             this.view.createUserTrigger.addEventListener('click', () => this.#handleAddClick());
             document.addEventListener('click', (event) => {
@@ -27,17 +29,18 @@ class UserController{
     }
     async #handleCreateSubmit(event){
         event.preventDefault();
+        this.view.setLoading(true);
         const formData = new FormData(this.view.createUserForm);
         const data = {
             name: formData.get('name'),
             email: formData.get('email'),
             phone: formData.get('phone'),
             company: formData.get('company'),
-            id: this.model.users.length + 1,
         };
         this.view.createUserForm.reset();
         await this.model.create(data);
         const users = this.model.users;
+        this.view.setLoading(false);
         this.view.renderTable(users);
     }
     #handleEditClick(id){
@@ -47,6 +50,7 @@ class UserController{
     }
     async #handleEditSubmit(id, event){
         event.preventDefault();
+        this.view.setLoading(true);
         const formData = new FormData(this.view.editUserForm);
         const data = {
             name: formData.get('name'),
@@ -56,6 +60,7 @@ class UserController{
         }
         await this.model.update(id, data);
         const users = this.model.users;
+        this.view.setLoading(false);
         this.view.renderTable(users);
     }
     #handleDeleteClick(id){
@@ -64,8 +69,10 @@ class UserController{
         this.view.confirmDeleteUserTrigger.addEventListener('click', () => this.#handleDeleteConfirm(id));
     }
     async #handleDeleteConfirm(id){
+        this.view.setLoading(true);
         await this.model.delete(id);
         const users = this.model.users;
+        this.view.setLoading(false);
         this.view.renderTable(users);
     }
 }

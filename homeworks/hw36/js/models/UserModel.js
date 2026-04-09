@@ -2,6 +2,7 @@ import {BASE_URL, ENDPOINTS} from "../config/api.js"
 
 class UserModel {
     users = null;
+    lastId = 10;
     constructor() {
         this.users = [];
     }
@@ -10,6 +11,7 @@ class UserModel {
         try{
             const response = await fetch(`${BASE_URL}${ENDPOINTS.USERS}`)
             const data = await response.json();
+            if(!response.ok) throw new Error(response.statusText);
             return data;
         }catch (e){
             throw new Error(e.message);
@@ -23,6 +25,7 @@ class UserModel {
                 body: JSON.stringify(userData),
             });
             if(!response.ok) throw new Error(response.statusText);
+            return await response.json();
         }catch (e){
             throw new Error(e.message);
         }
@@ -55,15 +58,16 @@ class UserModel {
     async getAll(){
         const users = await this.#fetchGetAllUsers();
         this.users = await users;
+        this.lastId = users[users.length - 1].id;
         return this.users;
     }
     async create(userData){
-        await this.#fetchCreateUser(userData);
-        this.users.push(userData);
+       const res = await this.#fetchCreateUser(userData);
+       res.id = ++this.lastId;
+       this.users.push(res);
     }
     async update(id, userData){
         const res = await this.#fetchUpdateUser(id, userData);
-        console.log(res)
         this.users = this.users.map(user =>
             user.id === res.id ? {...user, ...res} : user
         );
@@ -72,7 +76,6 @@ class UserModel {
     async delete(id){
         await this.#fetchDeleteUser(id);
         this.users = this.users.filter(user => Number(user.id) !== Number(id));
-        console.log(this.users)
     }
 }
 export default UserModel;

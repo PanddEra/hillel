@@ -1,6 +1,8 @@
 import {modalGenerator} from "./generator/ModalGenerator.js";
+import {toastGenerator} from "./generator/ToastGenerator.js";
 
-class UserView{
+
+class UserView {
     usersTable = null;
     createUserTrigger = null;
     createUserForm = null;
@@ -18,14 +20,14 @@ class UserView{
             document.querySelector('.modal-wrapper').remove();
             this.modal = null;
         }
-        
-        const tableHtml = `<table class="table">
+
+        const tableHtml = `<table class="table table-striped border text-center">
             <thead>
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Actions</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,13 +37,13 @@ class UserView{
                     <td>${user.name}</td>
                     <td>${user.email}</td>
                     <td>
-                        <button class="btn btn-sm btn-warning" data-edit-user='${user.id}'>Edit</button>
+                        <button class="btn btn-sm btn-warning " data-edit-user='${user.id}'>Edit</button>
                         <button class="btn btn-sm btn-danger" data-delete-user='${user.id}'>Delete</button>
                     </td>
                 </tr>`).join('')}
             </tbody>
         </table>`;
-        
+
         const container = document.querySelector('[data-users-table-container]');
         container.innerHTML = '';
         container.insertAdjacentHTML('beforeend', tableHtml);
@@ -117,27 +119,41 @@ class UserView{
 
     setLoading(isLoading) {
         if (isLoading) {
-             const spinner = `<div data-spinner class="d-flex justify-content-center">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>`
+            if (document.querySelector('[data-spinner]')) return;
+            const spinner = `
+        <div data-spinner
+             class="position-fixed top-0 start-0 w-100 vh-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50"
+             style="z-index: 1000;">
+             
+            <div class="spinner-border text-light" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            
+        </div>`;
+
             document.body.insertAdjacentHTML('beforeend', spinner);
+
         } else {
-            document.querySelector('[data-spinner]').remove();
+            const el = document.querySelector('[data-spinner]');
+            if (el) el.remove();
         }
     }
 
-    showError(message) {
-        const error = `<div class="toast align-items-center text-bg-danger border-0" role="alert">
-            <div class="d-flex">
-                <div class="toast-body">
-                    Error: ${message}
-                </div>
-                <button type="button" class="btn-close btn-close-black me-2 m-auto" data-bs-dismiss="toast"></button>
-            </div>
-        </div>`
-        document.body.insertAdjacentHTML('beforeend', error);
+    showToast(message, type = 'primary') {
+        const container = document.querySelector('[data-toast-container]');
+
+        const toastHTML = toastGenerator(message, type);
+        container.insertAdjacentHTML('beforeend', toastHTML);
+
+        const toastEl = container.lastElementChild;
+        const toast = new bootstrap.Toast(toastEl);
+
+        toast.show();
+
+        toastEl.addEventListener('hidden.bs.toast', () => {
+            toastEl.remove();
+        });
     }
 }
+
 export default UserView;
