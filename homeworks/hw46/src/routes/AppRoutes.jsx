@@ -1,6 +1,6 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import {Navigate} from "react-router";
-import UsersListPage from "../pages/UsersListPage/UsersListPage.jsx";
+import UsersListPage from "../pages/UsersListPage";
 import MainLayout from "../templates/MainLayout.jsx";
 
 const AppRouter = () => {
