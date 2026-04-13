@@ -1,29 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import usersApi from "../../api/usersApi/usersApi.js";
-import Message from "../../components/Message";
+import ToastMessage from "../../components/ToastMessage";
 import UsersTable from "../../components/UsersTable";
+import {Navigate} from "react-router";
 
 
-function UsersListPage() {
-    const [users, setUsers] = useState([]);
+function UsersListPage({users}) {
     
-    useEffect(() => {
-        async function fetchUsers() {
-            try {
-                const users = await usersApi.getUsers();
-                setUsers(users);
-            } catch (e) {
-                Message('error', e.message);
-        }
-        }
-        fetchUsers();
-        console.log(users)
-    }, []);
+    const onEditHandler = (id) => {
+        return <Navigate to={`/users/${id}/edit`} />
+    }
+
+    const onDeleteHandler = (id) => {
+        return <ToastMessage message={'User deleted' + id}/>
+    }
+    
 
     return (
         <div>
             <h1>Users List</h1>
-            <UsersTable users={users} onEdit={() => {}} onDelete={() => {}} />
+            <UsersTable users={users} onEdit={onEditHandler} onDelete={onDeleteHandler} />
         </div>
     );
 };

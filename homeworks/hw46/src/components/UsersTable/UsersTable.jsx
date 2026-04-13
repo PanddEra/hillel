@@ -1,4 +1,5 @@
 import Table from 'react-bootstrap/Table';
+import {Link} from "react-router-dom";
 
 function UserTable({users, onEdit, onDelete}) {
     return (
@@ -15,15 +16,15 @@ function UserTable({users, onEdit, onDelete}) {
             </thead>
             <tbody>
             {users.map((user) => (
-                <tr key={user.id}>
+                <tr>
                     <td>{user.id}</td>
-                    <td>{user.name}</td>
+                    <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
                     <td>{user.email}</td>
                     <td>{user.phone}</td>
                     <td>{user.website}</td>
                     <td>
-                        <button onClick={onEdit}>Edit</button>
-                        <button onClick={onDelete}>Delete</button>
+                        <button onClick={onEdit(user.id)}>Edit</button>
+                        <button onClick={onDelete(user.id)}>Delete</button>
                     </td>
                 </tr>
             ))}
