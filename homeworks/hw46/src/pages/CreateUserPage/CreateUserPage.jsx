@@ -3,23 +3,28 @@ import usersApi from "../../api/usersApi/usersApi.js";
 import {initialValues, inputs, validationSchema} from "../../components/UserForm/formConfig.js";
 import ToastMessage from "../../components/ToastMessage/index.js";
 import {Navigate} from "react-router";
+import {useState} from "react";
 
 
 function CreateUserPage({addUser}) {
+    const [userIsCreated, setUserIsCreated] = useState(false);
     const onSubmitHandler = (userData) => {
         async function fetchNewUser() {
             try{
                 const response = await usersApi.createUser(userData);
-                addUser(await response.json());
+                if(await response){
+                    setUserIsCreated(true);
+                }
+                addUser(await response);
             }catch (e) {
-                return <ToastMessage type={'error'} message={e.message}/>
+                <ToastMessage type={'error'} message={e.message}/>
             }
-            return <Navigate to={"/"}/>
         }
         fetchNewUser();
     }
     return (
         <div>
+            {userIsCreated ? <Navigate to={"/"}/> : null}
             <UserForm initialValues={initialValues} validationSchema={validationSchema} inputs={inputs} formTitle="Create New User" formButton="Create User" onSubmit={onSubmitHandler}/>
         </div>
     );

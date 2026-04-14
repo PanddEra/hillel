@@ -23,7 +23,7 @@ function UserForm({onSubmit, initialValues, validationSchema, inputs, formTitle,
                 }
             }
             onSubmit(JSON.stringify(userdata));
-            formik.resetForm()
+            formik.resetForm();
         }
     });
 

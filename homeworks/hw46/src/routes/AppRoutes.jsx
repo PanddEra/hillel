@@ -29,6 +29,14 @@ function AppRouter() {
     const addUser = (user) => {
         setUsers(prev => [...prev, user]);
     };
+    const editUser = (userData, id) => {
+        setUsers(users.map(user => {
+            if (user.id === id) {
+                return userData;
+            }
+            return user;
+        }))
+    }
     return (
         <Router>
             <MainLayout>
@@ -37,7 +45,7 @@ function AppRouter() {
                     <Route path="/users" element={<UsersListPage users={users}/>}/>
                     {<Route path="/users/create" element={<CreateUserPage addUser={addUser}/>} />}
                     {<Route path="/users/:id" element={<UserDetailsPage />} />}
-                    {<Route path="/users/:id/edit" element={<EditUserPage />} />}
+                    {<Route path="/users/:id/edit" element={<EditUserPage editUser={editUser} />} />}
                     {<Route path="*" element={<NotFoundPage />} />}
                 </Routes>
             </MainLayout>

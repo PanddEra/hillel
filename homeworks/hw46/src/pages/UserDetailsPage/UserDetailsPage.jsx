@@ -23,9 +23,13 @@ function UserDetailsPage() {
         <div>
             <h1>User Details</h1>
             <p>Name: {user.name} </p>
+            <p>Username: {user.username}</p>
             <p>Email: {user.email} </p>
             <p>Phone: {user.phone} </p>
             <p>Website: {user.website} </p>
+            <p>Company: {user.company.name}</p>
+            <p>City: {user.address.city}</p>
+            <p>Street: {user.address.street}</p>
         </div>
     );
 }
