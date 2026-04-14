@@ -22,10 +22,8 @@ export const validationSchema = Yup.object(
             .email("Invalid email")
             .required("Email is required"),
         phone: Yup.string()
-            .matches(/^((\+\d{1,3}([- ])?\(?\d\)?([- ])?\d{1,3})|(\(?\d{2,3}\)?))([- ])?(\d{3,4})([- ])?(\d{4})(( x| ext)\d{1,5})?$/, "Invalid phone number")
             .required("Phone is required"),
         website: Yup.string()
-            .url("Invalid URL")
             .required("Website is required"),
         companyName: Yup.string()
             .required("Company name is required"),

@@ -23,8 +23,8 @@ function UserTable({users, onEdit, onDelete}) {
                     <td>{user.phone}</td>
                     <td>{user.website}</td>
                     <td>
-                        <button onClick={onEdit(user.id)}>Edit</button>
-                        <button onClick={onDelete(user.id)}>Delete</button>
+                        <button onClick={() => onEdit(user.id)}>Edit</button>
+                        <button onClick={() => onDelete(user.id)}>Delete</button>
                     </td>
                 </tr>
             ))}

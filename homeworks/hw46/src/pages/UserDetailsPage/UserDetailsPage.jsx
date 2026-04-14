@@ -3,7 +3,7 @@ import {useParams} from "react-router";
 import usersApi from "../../api/usersApi";
 import ToastMessage from "../../components/ToastMessage/index.js";
 
-function UserDetailsPage() {
+function UserDetailsPage({showToast}) {
     const {id} = useParams();
     const [user, setUser] = useState([])
 
@@ -13,7 +13,7 @@ function UserDetailsPage() {
                 const user = await usersApi.getUserById(id);
                 setUser(user);
             } catch (e) {
-                <ToastMessage type={'error'} message={e.message} />
+                showToast(<ToastMessage type={'success'} message={e.message}/>);
             }
         }
         fetchUserById();

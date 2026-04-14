@@ -1,18 +1,20 @@
 import ToastMessage from "../../components/ToastMessage";
 import UsersTable from "../../components/UsersTable";
-import {Navigate} from "react-router";
+import {useNavigate} from "react-router";
+import React from "react";
 
 
-function UsersListPage({users}) {
+function UsersListPage({users, deleteUser, showToast}) {
+    const navigate = useNavigate();
     
-    const onEditHandler = (id) => {
-        return <Navigate to={`/users/${id}/edit`} />
+    function onEditHandler(id) {
+        navigate(`/users/${id}/edit`)
     }
 
-    const onDeleteHandler = (id) => {
-        return <ToastMessage message={'User deleted' + id}/>
+    function onDeleteHandler(id) {
+        deleteUser(id);
+        showToast(<ToastMessage type={'success'} message={'User deleted'}/>);
     }
-    
 
     return (
         <div>

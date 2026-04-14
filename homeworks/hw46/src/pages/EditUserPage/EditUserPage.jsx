@@ -1,34 +1,69 @@
 import UserForm from "../../components/UserForm";
 import usersApi from "../../api/usersApi/usersApi.js";
-import {initialValues, inputs, validationSchema} from "../../components/UserForm/formConfig.js";
+import {inputs, validationSchema} from "../../components/UserForm/formConfig.js";
 import ToastMessage from "../../components/ToastMessage/index.js";
-import {Navigate, useParams} from "react-router";
-import {useState} from "react";
+import {Navigate, useNavigate, useParams} from "react-router";
+import {useEffect, useState} from "react";
 
 
-function EditUserPage({editUser}) {
-    const [userIsUpdated, setUserIsUpdated] = useState(false);
+function EditUserPage({editUser, showToast}) {
+    const navigate = useNavigate();
     const [user, setUser] = useState({});
-    const id = useParams();
-    const onSubmitHandler = (userData) => {
-        async function fetchEditUser() {
-            try{
-                const response = await usersApi.updateUser(userData, id);
-                if(await response){
-                    setUserIsUpdated(true);
-                }
-                editUser(await response);
-                setUser(await response);
-            }catch (e) {
-                <ToastMessage type={'error'} message={e.message}/>
+    const id = useParams().id;
+
+    useEffect(() => {
+        async function fetchUserById() {
+            try {
+                const userById = await usersApi.getUserById(id);
+                setUser(await userById);
+            } catch (e) {
+                showToast(<ToastMessage type={'danger'} message={e.message}/>);
             }
         }
+        fetchUserById()
+    }, [id]);
+
+    const onSubmitHandler = (userData) => {
+        const data = JSON.parse(userData);
+        async function fetchEditUser() {
+            try {
+                const response = await usersApi.updateUser(id, JSON.stringify({
+                    name: data.name,
+                    username: data.username,
+                    email: data.email,
+                    phone: data.phone,
+                    website: data.website,
+                    company: {
+                        name: data.companyName
+                    },
+                    address: {
+                        city: data.addressCity,
+                        street: data.addressStreet
+                    }
+                }));
+                editUser(await response, id);
+                navigate('/users');
+                showToast(<ToastMessage type={'success'} message={'User edited'}/>);
+            } catch (e) {
+                showToast(<ToastMessage type={'danger'} message={e.message}/>);
+            }
+        }
+
         fetchEditUser();
     }
     return (
         <div>
-            {userIsUpdated ? <Navigate to={"/"}/> : null}
-            <UserForm initialValues={user} validationSchema={validationSchema} inputs={inputs} formTitle="Edit User" formButton="Submit" onSubmit={onSubmitHandler}/>
+            {user?.id ? <UserForm initialValues={{
+                name: user.name,
+                username: user.username,
+                email: user.email,
+                phone: user.phone,
+                companyName: user.company.name,
+                addressCity: user.address.city,
+                addressStreet: user.address.street,
+                website: user.website
+            }} validationSchema={validationSchema} inputs={inputs} formTitle={`Edit User: ${user.name}`}
+                              formButton="Submit" onSubmit={onSubmitHandler}/> : null}
         </div>
     );
 }
