@@ -1,4 +1,3 @@
-import ToastMessage from "../../components/ToastMessage";
 import UsersTable from "../../components/UsersTable";
 import {useNavigate} from "react-router";
 import React from "react";
@@ -13,7 +12,7 @@ function UsersListPage({users, deleteUser, showToast}) {
 
     function onDeleteHandler(id) {
         deleteUser(id);
-        showToast(<ToastMessage type={'success'} message={'User deleted'}/>);
+        showToast('success', 'User deleted');
     }
 
     return (

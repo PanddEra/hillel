@@ -4,6 +4,7 @@ import {inputs, validationSchema} from "../../components/UserForm/formConfig.js"
 import ToastMessage from "../../components/ToastMessage/index.js";
 import {Navigate, useNavigate, useParams} from "react-router";
 import {useEffect, useState} from "react";
+import Loader from "../../components/Loader/index.js";
 
 
 function EditUserPage({editUser, showToast}) {
@@ -23,33 +24,24 @@ function EditUserPage({editUser, showToast}) {
         fetchUserById()
     }, [id]);
 
-    const onSubmitHandler = (userData) => {
-        const data = JSON.parse(userData);
-        async function fetchEditUser() {
+    const onSubmitHandler = (values) => {
+        const apiPayload = {
+            ...values,
+            company: { name: values.companyName },
+            address: { city: values.addressCity, street: values.addressStreet }
+        };
+
+        async function update() {
             try {
-                const response = await usersApi.updateUser(id, JSON.stringify({
-                    name: data.name,
-                    username: data.username,
-                    email: data.email,
-                    phone: data.phone,
-                    website: data.website,
-                    company: {
-                        name: data.companyName
-                    },
-                    address: {
-                        city: data.addressCity,
-                        street: data.addressStreet
-                    }
-                }));
-                editUser(await response, id);
+                const updatedUser = await usersApi.updateUser(id, apiPayload);
+                editUser(updatedUser, id);
                 navigate('/users');
-                showToast(<ToastMessage type={'success'} message={'User edited'}/>);
+                showToast('success', 'User updated');
             } catch (e) {
-                showToast(<ToastMessage type={'danger'} message={e.message}/>);
+                showToast('danger', e.message);
             }
         }
-
-        fetchEditUser();
+        update();
     }
     return (
         <div>
@@ -63,7 +55,7 @@ function EditUserPage({editUser, showToast}) {
                 addressStreet: user.address.street,
                 website: user.website
             }} validationSchema={validationSchema} inputs={inputs} formTitle={`Edit User: ${user.name}`}
-                              formButton="Submit" onSubmit={onSubmitHandler}/> : null}
+                              formButton="Submit" onSubmit={onSubmitHandler}/> : <Loader/>}
         </div>
     );
 }

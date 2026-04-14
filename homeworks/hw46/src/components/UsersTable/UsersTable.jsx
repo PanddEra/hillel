@@ -22,9 +22,9 @@ function UserTable({users, onEdit, onDelete}) {
                     <td>{user.email}</td>
                     <td>{user.phone}</td>
                     <td>{user.website}</td>
-                    <td>
-                        <button onClick={() => onEdit(user.id)}>Edit</button>
-                        <button onClick={() => onDelete(user.id)}>Delete</button>
+                    <td className={'d-flex justify-content-around'}>
+                        <button className={'btn btn-outline-warning'} onClick={() => onEdit(user.id)}>Edit</button>
+                        <button className={'btn btn-outline-danger'} onClick={() => onDelete(user.id)}>Delete</button>
                     </td>
                 </tr>
             ))}

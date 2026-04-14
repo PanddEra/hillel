@@ -11,10 +11,10 @@ function CreateUserPage({addUser, showToast}) {
             try{
                 const response = await usersApi.createUser(userData);
                 addUser(await response);
-                showToast(<ToastMessage type={'success'} message={'User created'}/>);
+                showToast('success', 'User created');
                 navigate('/');
             }catch (e) {
-                showToast(<ToastMessage type={'danger'} message={e.message}/>);
+                showToast('danger', e.message);
             }
         }
         fetchNewUser();

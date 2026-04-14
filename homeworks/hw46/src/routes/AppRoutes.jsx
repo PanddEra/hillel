@@ -8,22 +8,26 @@ import EditUserPage from "../pages/EditUserPage";
 import CreateUserPage from "../pages/CreateUserPage";
 import React, {useEffect, useState} from "react";
 import usersApi from "../api/usersApi/index.js";
-import ToastMessage from "../components/ToastMessage/index.js";
+import ToastMessage from "../components/ToastMessage";
+import Loader from "../components/Loader";
 
 
 function AppRouter() {
     const [users, setUsers] = useState([]);
     const [toast, setToast] = useState(null);
-    const showToast = (toast) => {
-        setToast(toast)
-    }
+    const [isLoading, setIsLoading] = useState(true);
+
+    const showToast = (type, message) => {
+        setToast({ type, message });
+    };
     useEffect(() => {
         async function fetchUsers() {
             try {
                 const users = await usersApi.getUsers();
                 setUsers(users);
+                setIsLoading(false);
             } catch (e) {
-                showToast(<ToastMessage type={'danger'} message={e.message}/>);
+                showToast('danger', e.message);
             }
         }
 
@@ -31,10 +35,8 @@ function AppRouter() {
     }, []);
 
     const addUser = (user) => {
-        const newUser = {
-            ...user,
-            id: users[users.length - 1].id + 1
-        }
+        const lastId = users.length > 0 ? users[users.length - 1].id : 0;
+        const newUser = { ...user, id: lastId + 1 };
         setUsers(prev => [...prev, newUser]);
     };
     const editUser = (userData, id) => {
@@ -61,7 +63,16 @@ function AppRouter() {
                     <Route path="/users/:id/edit" element={<EditUserPage showToast={showToast} editUser={editUser}/>}/>
                     <Route path="*" element={<NotFoundPage/>}/>
                 </Routes>
-                {toast ? toast : null}
+                {toast && (
+                    <ToastMessage
+                        type={toast.type}
+                        message={toast.message}
+                        onClose={() => setToast(null)}
+                    />
+                )}
+                {isLoading && (
+                    <Loader/>
+                )}
             </MainLayout>
         </Router>
     );

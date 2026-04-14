@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import usersApi from "../../api/usersApi";
-import ToastMessage from "../../components/ToastMessage/index.js";
+import Loader from "../../components/Loader/index.js";
 
 function UserDetailsPage({showToast}) {
     const {id} = useParams();
@@ -13,7 +13,7 @@ function UserDetailsPage({showToast}) {
                 const user = await usersApi.getUserById(id);
                 setUser(user);
             } catch (e) {
-                showToast(<ToastMessage type={'success'} message={e.message}/>);
+               showToast('danger', e.message)
             }
         }
         fetchUserById();
@@ -21,6 +21,7 @@ function UserDetailsPage({showToast}) {
 
     return (
         <div>
+            {user ? null : <Loader/>}
             <h1>User Details</h1>
             <p>Name: {user.name} </p>
             <p>Username: {user.username}</p>

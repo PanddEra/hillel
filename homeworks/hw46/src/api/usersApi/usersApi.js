@@ -16,7 +16,7 @@ const usersApi = {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: userData
+            body: JSON.stringify(userData)
         });
         if (!res.ok) throw new Error('Cant create user');
         return await res.json();
@@ -32,7 +32,7 @@ const usersApi = {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: userData
+            body: JSON.stringify(userData)
         });
         if (!res.ok) throw new Error('Cant update user');
         return await res.json();

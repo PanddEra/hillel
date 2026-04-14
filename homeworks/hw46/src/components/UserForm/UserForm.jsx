@@ -7,22 +7,7 @@ function UserForm({onSubmit, initialValues, validationSchema, inputs, formTitle,
         initialValues,
         validationSchema,
         onSubmit: (values) => {
-            console.log(values);
-            const userdata = {
-                name: values.name,
-                username: values.username,
-                email: values.email,
-                phone: values.phone,
-                website: values.website,
-                company: {
-                    name: values.companyName
-                },
-                address: {
-                    city: values.addressCity,
-                    street: values.addressStreet
-                }
-            }
-            onSubmit(JSON.stringify(userdata));
+            onSubmit(values);
             formik.resetForm();
         }
     });
