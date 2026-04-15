@@ -18,13 +18,13 @@ function EditUserPage({users, setUsers, showToast, }) { // users, setUsers for f
 
                 //for fake api
                 if (!res) {
-                    const user = users.find(user => user.id === Number(id));
-                    if (!user) {
+                    const userFromState = users.find(user => user.id === Number(id));
+                    if (!userFromState) {
                         showToast('danger', 'User not found');
                         navigate('/users');
                         return;
                     }
-                    setUser(user)
+                    setUser(userFromState)
                     return;
                 }
                 //--------

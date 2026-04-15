@@ -31,7 +31,7 @@ function UserDetailsPage({users, showToast}) { // users for fake api
                     navigate('/users');
                     return;
                 }
-                setUser(user)
+                setUser(res)
             } catch (e) {
                 showToast('danger', e.message)
             }

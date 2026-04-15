@@ -3,7 +3,7 @@ import usersApi from "../../api/usersApi/usersApi.js";
 import {initialValues, inputs, validationSchema} from "../../components/UserForm/formConfig.js";
 import {useNavigate} from "react-router";
 
-function CreateUserPage({setUsers, showToast}) {
+function CreateUserPage({setUsers, showToast}) { // setUsers for fake api
     const navigate = useNavigate();
     const onSubmitHandler = (userData) => {
         async function fetchNewUser() {
@@ -13,7 +13,7 @@ function CreateUserPage({setUsers, showToast}) {
                     showToast('danger', 'User not created');
                     return;
                 }
-                setUsers(await response);
+                setUsers(await response);// <--
                 showToast('success', 'User created');
                 navigate('/');
             } catch (e) {
