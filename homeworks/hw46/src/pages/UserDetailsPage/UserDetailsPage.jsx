@@ -13,32 +13,25 @@ function UserDetailsPage({users, showToast}) { // users for fake api
             try {
                 const res = await usersApi.getUserById(id);
 
-                //for fake api
-                if (!res) {
-                    const user = users.find(user => user.id === Number(id));
-                    if (!user) {
+                if (res) {
+                    setUser(res);
+                } else {
+                    const foundUser = users.find(u => u.id === Number(id));
+                    if (foundUser) {
+                        setUser(foundUser);
+                    } else {
                         showToast('danger', 'User not found');
-                        navigate('/users');
-                        return;
+                        navigate('/*');
                     }
-                    setUser(user)
-                    return;
                 }
-                //--------
-
-                if (!res) {
-                    showToast('danger', 'User not found');
-                    navigate('/users');
-                    return;
-                }
-                setUser(res)
             } catch (e) {
-                showToast('danger', e.message)
+                showToast('danger', e.message || 'Cant find user');
+                navigate('/*');
             }
         }
 
         fetchUserById();
-    }, []);
+    }, [id, users, showToast, navigate]);
 
 
     return (

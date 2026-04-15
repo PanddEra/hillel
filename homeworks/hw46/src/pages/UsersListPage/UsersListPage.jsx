@@ -1,11 +1,12 @@
+import React, {useEffect, useState} from "react";
+import { useNavigate } from "react-router";
 import UsersTable from "../../components/UsersTable";
-import {useNavigate} from "react-router";
-import React, {useEffect} from "react";
 import usersApi from "../../api/usersApi/index.js";
+import Loader from "../../components/Loader/index.js";
 
-
-function UsersListPage({users, setUsers, showToast}) { // users, setUsers for fake api
+function UsersListPage({ users, setUsers, showToast }) {
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         async function fetchUsers() {
@@ -17,52 +18,49 @@ function UsersListPage({users, setUsers, showToast}) { // users, setUsers for fa
                     return;
                 }
                 setUsers(res);
+                setIsLoading(false);
             } catch (e) {
                 showToast('danger', e.message);
             }
         }
         fetchUsers();
     }, []);
-    
+
     function onEditHandler(id) {
         navigate(`/users/${id}/edit`);
     }
 
-    function onDeleteHandler(id) {
-        async function deleteUser() {
-            try {
-                const res = await usersApi.deleteUser(id);
+    async function onDeleteHandler(id) {
+        try {
+            setIsLoading(true);
+            const res = await usersApi.deleteUser(id);
 
-                //for fake api
-                if (!res) {
-                    const user = users.find(user => user.id === Number(id))
-                    if (!user) {
-                        showToast('danger', 'User not found');
-                        return;
-                    }
-                    setUsers(users.filter(user => user.id !== id));
-                    showToast('success', 'User deleted');
+            if (!res) {
+                const userExists = users.some(user => user.id === Number(id));
+                if (!userExists) {
+                    showToast('danger', 'User not found');
                     return;
                 }
-                //--------
-
-                if (!res) {
-                    showToast('danger', 'User not deleted');
-                    return;
-                }
-            } catch (e) {
-                showToast('danger', e.message);
             }
+            setUsers(prevUsers => prevUsers.filter(user => user.id !== id));
+            setIsLoading(false);
+            showToast('success', 'User deleted');
+        } catch (e) {
+            showToast('danger', e.message || 'User not deleted');
         }
-        deleteUser();
-        setUsers(users.filter(user => user.id !== id));
-        showToast('success', 'User deleted');
     }
 
     return (
         <div>
+            {isLoading && (
+                <Loader/>)
+            }
             <h1>Users List</h1>
-            <UsersTable users={users} onEdit={onEditHandler} onDelete={onDeleteHandler} />
+            <UsersTable
+                users={users}
+                onEdit={onEditHandler}
+                onDelete={onDeleteHandler}
+            />
         </div>
     );
 }
