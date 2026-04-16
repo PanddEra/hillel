@@ -1,7 +1,22 @@
 import {Navbar, Nav, Container, Button, Form} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import {useState} from "react";
+import {useNavigate} from "react-router";
 
-const NavigationBar = () => {
+const NavigationBar = ({users}) => {
+    const [search, setSearch] = useState("");
+    const navigate = useNavigate();
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const user = users.find(u => u.name.toLowerCase().trim().includes(search.toLowerCase().trim()));
+        if (user) {
+            setSearch("");
+            navigate(`/users/${user.id}`)
+        }else{
+            setSearch("");
+            navigate('/*');
+        }
+    }
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
@@ -12,14 +27,16 @@ const NavigationBar = () => {
                         <Nav.Link as={Link} to="/">Users List</Nav.Link>
                         <Nav.Link as={Link} to="/users/create">Create User</Nav.Link>
                     </Nav>
-                    <Form className="d-flex">
+                    <Form className="d-flex" onSubmit={handleSearch}>
                         <Form.Control
                             type="search"
-                            placeholder="Search"
+                            placeholder="Search by name..."
                             className="me-2"
                             aria-label="Search"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                         />
-                        <Button variant="outline-success">Search</Button>
+                        <Button type="submit" disabled={search.trim() === ""} variant="outline-success">Search</Button>
                     </Form>
                 </Navbar.Collapse>
             </Container>

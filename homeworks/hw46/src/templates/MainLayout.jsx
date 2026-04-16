@@ -1,10 +1,10 @@
 import { Container } from 'react-bootstrap';
 import NavigationBar from '../components/AppNavbar';
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({users, children }) => {
     return (
         <>
-            <NavigationBar />
+            <NavigationBar users={users}/>
             <Container className="mt-4">
                 {children}
             </Container>

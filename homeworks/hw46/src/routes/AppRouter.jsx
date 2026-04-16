@@ -11,7 +11,7 @@ import MainLayout from "../templates/MainLayout.jsx";
 function AppRouter({users, setUsers, showToast}) {
     return (
         <Router>
-            <MainLayout>
+            <MainLayout users={users}>
                 <Routes>
                     <Route path="/" element={<Navigate to="/users"/>}/>
                     <Route path="/users"
