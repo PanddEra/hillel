@@ -16,7 +16,7 @@ function UserTable({users, onEdit, onDelete}) {
             </thead>
             <tbody>
             {users.map((user) => (
-                <tr>
+                <tr key={user.id}>
                     <td>{user.id}</td>
                     <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
                     <td>{user.email}</td>

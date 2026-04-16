@@ -20,13 +20,17 @@ function UserDetailsPage({users, showToast}) { // users for fake api
                     if (foundUser) {
                         setUser(foundUser);
                     } else {
-                        showToast('danger', 'User not found');
-                        navigate('/*');
+                        throw new Error('User not found');
                     }
                 }
             } catch (e) {
-                showToast('danger', e.message || 'Cant find user');
-                navigate('/*');
+                const foundUser = users.find(u => u.id === Number(id));
+                if (foundUser) {
+                    setUser(foundUser);
+                } else {
+                    showToast('danger', e.message || 'User not found');
+                    navigate('/*');
+                }
             }
         }
 

@@ -16,7 +16,8 @@ function AppRouter({users, setUsers, showToast}) {
                     <Route path="/" element={<Navigate to="/users"/>}/>
                     <Route path="/users"
                            element={<UsersListPage showToast={showToast} users={users} setUsers={setUsers}/>}/>
-                    <Route path="/users/create" element={<CreateUserPage showToast={showToast} setUsers={setUsers}/>}/>
+                    <Route path="/users/create"
+                           element={<CreateUserPage showToast={showToast} setUsers={setUsers} users={users}/>}/>
                     <Route path="/users/:id" element={<UserDetailsPage showToast={showToast} users={users}/>}/>
                     <Route path="/users/:id/edit"
                            element={<EditUserPage showToast={showToast} users={users} setUsers={setUsers}/>}/>

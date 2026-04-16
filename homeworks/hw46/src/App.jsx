@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
-import ToastMessage from "./components/ToastMessage/index.js";
-import Loader from "./components/Loader/index.js";
-import AppRouter from "./routes/AppRouter.jsx";
-import MainLayout from "./templates/MainLayout.jsx";
+import ToastMessage from "./components/ToastMessage";
+import AppRouter from "./routes";
 
 function App() {
     const [users, setUsers] = useState([]);

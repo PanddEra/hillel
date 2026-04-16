@@ -1,28 +1,38 @@
 import React, {useEffect, useState} from "react";
-import { useNavigate } from "react-router";
+import {useNavigate} from "react-router";
 import UsersTable from "../../components/UsersTable";
-import usersApi from "../../api/usersApi/index.js";
-import Loader from "../../components/Loader/index.js";
+import usersApi from "../../api/usersApi";
+import Loader from "../../components/Loader";
+import ModalGenerator from "../../components/Modal";
+import {Button} from "react-bootstrap";
 
-function UsersListPage({ users, setUsers, showToast }) {
+function UsersListPage({users, setUsers, showToast}) {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
+    const [userIdToDelete, setUserIdToDelete] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         async function fetchUsers() {
+            if (users.length > 0) {
+                setIsLoading(false);
+                return;
+            }
+
             try {
                 const res = await usersApi.getUsers();
                 if (!res) {
-                    showToast('danger', 'Users not found');
-                    navigate('/*');
-                    return;
+                    throw new Error('Users not found');
                 }
                 setUsers(res);
                 setIsLoading(false);
             } catch (e) {
-                showToast('danger', e.message);
+                showToast('danger', e.message || 'Users not found');
+                setIsLoading(false);
+                navigate('/*');
             }
         }
+
         fetchUsers();
     }, []);
 
@@ -30,23 +40,31 @@ function UsersListPage({ users, setUsers, showToast }) {
         navigate(`/users/${id}/edit`);
     }
 
-    async function onDeleteHandler(id) {
+    function onDeleteHandler(id) {
+        setUserIdToDelete(id);
+        setShowModal(true);
+    }
+
+    async function onDeleteConfirm(id) {
         try {
             setIsLoading(true);
             const res = await usersApi.deleteUser(id);
 
+            setShowModal(false);
+
             if (!res) {
                 const userExists = users.some(user => user.id === Number(id));
-                if (!userExists) {
-                    showToast('danger', 'User not found');
-                    return;
-                }
+                if (!userExists) throw new Error('User not found');
             }
-            setUsers(prevUsers => prevUsers.filter(user => user.id !== id));
-            setIsLoading(false);
+
+            setUsers(prevUsers => prevUsers.filter(user => user.id !== Number(id)));
             showToast('success', 'User deleted');
         } catch (e) {
             showToast('danger', e.message || 'User not deleted');
+            setShowModal(false);
+        } finally {
+            setIsLoading(false);
+            setUserIdToDelete(null);
         }
     }
 
@@ -56,11 +74,26 @@ function UsersListPage({ users, setUsers, showToast }) {
                 <Loader/>)
             }
             <h1>Users List</h1>
-            <UsersTable
-                users={users}
-                onEdit={onEditHandler}
-                onDelete={onDeleteHandler}
-            />
+            {users.length ? (
+                <UsersTable
+                    users={users}
+                    onEdit={onEditHandler}
+                    onDelete={onDeleteHandler}
+                />) : <p>List is empty. Add new user or refresh page.</p>}
+            {showModal && (
+                <ModalGenerator
+                    header={`Confirm deletion of user`}
+                    body={`Are you sure you want to delete ${users.find(u => u.id === Number(userIdToDelete))?.name}?`}
+                    footer={
+                        <div className="d-flex gap-2">
+                            <Button variant="secondary" onClick={() => setShowModal(false)} disabled={isLoading}>Cancel</Button>
+                            <Button variant="danger" onClick={() => onDeleteConfirm(userIdToDelete)} disabled={isLoading}>Delete</Button>
+                        </div>
+                    }
+                    onHide={() => setShowModal(false)}
+                    show={showModal}
+                />
+            )}
         </div>
     );
 }

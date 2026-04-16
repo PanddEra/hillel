@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import UserForm from "../../components/UserForm";
-import usersApi from "../../api/usersApi/usersApi.js";
+import usersApi from "../../api/usersApi";
 import { inputs, validationSchema } from "../../components/UserForm/formConfig.js";
-import Loader from "../../components/Loader/index.js";
+import Loader from "../../components/Loader";
 
 function EditUserPage({ users, setUsers, showToast }) {
     const navigate = useNavigate();
     const { id } = useParams();
     const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
 
     useEffect(() => {
+        setIsLoading(true);
         async function fetchUserById() {
             try {
                 const res = await usersApi.getUserById(id);
@@ -22,8 +25,15 @@ function EditUserPage({ users, setUsers, showToast }) {
                     setUser(foundUser);
                 }
             } catch (e) {
-                showToast('danger', e.message || 'Cant find user');
-                navigate('/*');
+                const foundUser = users.find(u => u.id === Number(id));
+                if (foundUser) {
+                    setUser(foundUser);
+                }else{
+                    showToast('danger', e.message || 'User not found');
+                    navigate('/*');
+                }
+            } finally {
+                setIsLoading(false);
             }
         }
         fetchUserById();
@@ -48,11 +58,21 @@ function EditUserPage({ users, setUsers, showToast }) {
             showToast('success', 'User updated successfully');
             navigate('/users');
         } catch (e) {
+            if(users.find(u => u.id === Number(id))) {
+                setUsers(prevUsers =>
+                    prevUsers.map(u => (u.id === Number(id) ? apiPayload : u))
+                );
+                showToast('success', 'User updated successfully');
+                navigate('/users');
+                return;
+            }
             showToast('danger', e.message || 'Cant update user');
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    if (!user) return <Loader />;
+    if (isLoading) return <Loader />;
 
     return (
         <div>
