@@ -1,6 +1,7 @@
 import {Button, Form} from "react-bootstrap";
 import Input from "./Input";
 import {useFormik} from "formik";
+import PropTypes from "prop-types";
 function UserForm({onSubmit, initialValues, validationSchema, inputs, formTitle, formButton}) {
 
     const formik = useFormik({
@@ -46,5 +47,22 @@ function UserForm({onSubmit, initialValues, validationSchema, inputs, formTitle,
         </Form>
     );
 }
+
+UserForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    initialValues: PropTypes.object.isRequired,
+    validationSchema: PropTypes.object,
+    inputs: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+            name: PropTypes.string.isRequired,
+            label: PropTypes.string,
+            className: PropTypes.string,
+            type: PropTypes.string
+        })
+    ).isRequired,
+    formTitle: PropTypes.string,
+    formButton: PropTypes.string
+};
 
 export default UserForm;

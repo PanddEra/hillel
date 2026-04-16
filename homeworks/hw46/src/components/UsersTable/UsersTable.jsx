@@ -1,5 +1,7 @@
 import Table from 'react-bootstrap/Table';
 import {Link} from "react-router-dom";
+import PropTypes from "prop-types";
+import {userShape} from "../../types/userTypes.js";
 
 function UserTable({users, onEdit, onDelete}) {
     return (
@@ -32,5 +34,11 @@ function UserTable({users, onEdit, onDelete}) {
         </Table>
     );
 }
+
+UserTable.propTypes = {
+    users: PropTypes.arrayOf(userShape).isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired
+};
 
 export default UserTable;

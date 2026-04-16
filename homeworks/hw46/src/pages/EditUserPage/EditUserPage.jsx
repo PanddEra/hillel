@@ -4,6 +4,8 @@ import UserForm from "../../components/UserForm";
 import usersApi from "../../api/usersApi";
 import { inputs, validationSchema } from "../../components/UserForm/formConfig.js";
 import Loader from "../../components/Loader";
+import PropTypes from "prop-types";
+import {userShape} from "../../types/userTypes.js";
 
 function EditUserPage({ users, setUsers, showToast }) {
     const navigate = useNavigate();
@@ -97,5 +99,11 @@ function EditUserPage({ users, setUsers, showToast }) {
         </div>
     );
 }
+
+EditUserPage.propTypes = {
+    users: PropTypes.arrayOf(userShape).isRequired,
+    setUsers: PropTypes.func.isRequired,
+    showToast: PropTypes.func.isRequired
+};
 
 export default EditUserPage;

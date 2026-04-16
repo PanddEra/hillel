@@ -7,6 +7,8 @@ import EditUserPage from "../pages/EditUserPage";
 import CreateUserPage from "../pages/CreateUserPage";
 import React from "react";
 import MainLayout from "../templates/MainLayout.jsx";
+import PropTypes from "prop-types";
+import {userShape} from "../types/userTypes.js";
 
 function AppRouter({users, setUsers, showToast}) {
     return (
@@ -27,5 +29,11 @@ function AppRouter({users, setUsers, showToast}) {
         </Router>
     );
 }
+
+AppRouter.propTypes = {
+    users: PropTypes.arrayOf(userShape).isRequired,
+    setUsers: PropTypes.func.isRequired,
+    showToast: PropTypes.func.isRequired
+};
 
 export default AppRouter;

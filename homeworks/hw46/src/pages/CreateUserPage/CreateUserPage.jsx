@@ -4,6 +4,8 @@ import {initialValues, inputs, validationSchema} from "../../components/UserForm
 import {useNavigate} from "react-router";
 import {useState} from "react";
 import Loader from "../../components/Loader";
+import PropTypes from "prop-types";
+import {userShape} from "../../types/userTypes.js";
 
 function CreateUserPage({users, setUsers, showToast}) {
     const navigate = useNavigate();
@@ -50,5 +52,11 @@ function CreateUserPage({users, setUsers, showToast}) {
         </div>
     );
 }
+
+CreateUserPage.propTypes = {
+    users: PropTypes.arrayOf(userShape).isRequired,
+    setUsers: PropTypes.func.isRequired,
+    showToast: PropTypes.func.isRequired
+};
 
 export default CreateUserPage;

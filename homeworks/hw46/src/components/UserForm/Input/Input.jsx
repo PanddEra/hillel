@@ -1,4 +1,5 @@
 import {FloatingLabel, Form} from "react-bootstrap";
+import PropTypes from "prop-types";
 
 function Input({
                    id,
@@ -29,4 +30,17 @@ function Input({
         </Form.Group>
     );
 }
+
+Input.propTypes = {
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    name: PropTypes.string.isRequired,
+    label: PropTypes.string,
+    className: PropTypes.string,
+    type: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    onChange: PropTypes.func.isRequired,
+    touched: PropTypes.bool,
+    error: PropTypes.string
+};
+
 export default Input;

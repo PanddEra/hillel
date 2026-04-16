@@ -5,6 +5,8 @@ import usersApi from "../../api/usersApi";
 import Loader from "../../components/Loader";
 import ModalGenerator from "../../components/Modal";
 import {Button} from "react-bootstrap";
+import PropTypes from "prop-types";
+import {userShape} from "../../types/userTypes.js";
 
 function UsersListPage({users, setUsers, showToast}) {
     const navigate = useNavigate();
@@ -97,5 +99,11 @@ function UsersListPage({users, setUsers, showToast}) {
         </div>
     );
 }
+
+UsersListPage.propTypes = {
+    users: PropTypes.arrayOf(userShape).isRequired,
+    setUsers: PropTypes.func.isRequired,
+    showToast: PropTypes.func.isRequired
+};
 
 export default UsersListPage;

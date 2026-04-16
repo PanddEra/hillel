@@ -1,5 +1,6 @@
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
+import PropTypes from "prop-types";
 
 function ToastMessage({ type = 'success', message, onClose }) {
     return (
@@ -21,5 +22,11 @@ function ToastMessage({ type = 'success', message, onClose }) {
         </ToastContainer>
     );
 }
+
+ToastMessage.propTypes = {
+    type: PropTypes.oneOf(['success', 'danger', 'warning', 'info']),
+    message: PropTypes.string.isRequired,
+    onClose: PropTypes.func.isRequired
+};
 
 export default ToastMessage;

@@ -2,6 +2,8 @@ import {Navbar, Nav, Container, Button, Form} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {useState} from "react";
 import {useNavigate} from "react-router";
+import PropTypes from "prop-types";
+import {userShape} from "../../types/userTypes.js";
 
 const NavigationBar = ({users}) => {
     const [search, setSearch] = useState("");
@@ -44,4 +46,7 @@ const NavigationBar = ({users}) => {
     );
 };
 
+NavigationBar.propTypes = {
+    users: PropTypes.arrayOf(userShape).isRequired
+};
 export default NavigationBar;

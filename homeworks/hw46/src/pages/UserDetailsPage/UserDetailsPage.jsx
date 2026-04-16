@@ -2,6 +2,8 @@ import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router";
 import usersApi from "../../api/usersApi";
 import Loader from "../../components/Loader";
+import PropTypes from "prop-types";
+import {userShape} from "../../types/userTypes.js";
 
 function UserDetailsPage({users, showToast}) { // users for fake api
     const {id} = useParams();
@@ -56,5 +58,10 @@ function UserDetailsPage({users, showToast}) { // users for fake api
         </div>
     );
 }
+
+UserDetailsPage.propTypes = {
+    users: PropTypes.arrayOf(userShape).isRequired,
+    showToast: PropTypes.func.isRequired
+};
 
 export default UserDetailsPage;
